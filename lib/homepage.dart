@@ -1,4 +1,6 @@
+import 'package:care/vitalpage.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -17,122 +19,183 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Background image with logo overlay
-            Stack(
+      body: Stack(
+        children: [
+          // Background Image
+          Positioned.fill(
+            child: Image.asset(
+              'assets/background.jpeg',
+              fit: BoxFit.cover,
+            ),
+          ),
+          SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image.asset(
-                  'assets/background.jpeg', // Replace with your background image path
-                  width: double.infinity,
-                  height: 200,
-                  fit: BoxFit.cover,
+                // Logo
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Image.asset(
+                    'assets/logo.png',
+                    width: 100, // Set the desired width
+                    height: 100, // Set the desired height
+                    fit: BoxFit.cover, // Adjust the fit as needed
+                  ),
                 ),
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: AssetImage('assets/logo.png'), // Replace with your logo path
-                    ),
+
+                // Project description
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Welcome to Tribo Care',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Container(
+                        color: Colors.black.withOpacity(0.5), // Black transparent background
+                        padding: EdgeInsets.all(16.0), // Optional: Add some padding
+                        child: Text(
+                          'Tribo Care is an innovative telemedicine platform aimed at providing healthcare support to rural communities. Our app connects patients with healthcare providers, making healthcare accessible and efficient.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // How to use the wearable device
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        'How to Use Our Wearable Device',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Container(
+                        color: Colors.black.withOpacity(0.5), // Black transparent background
+                        padding: EdgeInsets.all(16.0), // Optional: Add some padding
+                        child: Text(
+                          'Our wearable device is designed to monitor your vitals and provide real-time updates to your doctor. Simply wear the device on your wrist, ensure it is connected to the app, and let it do the rest.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+
+                // Prototype images
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Prototype Images',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/prototype2.png',
+                            width: 200,
+                            height: 200,
+                            fit: BoxFit.cover,
+                          ),
+                          SizedBox(height: 10), // Space between the images
+                          Image.asset(
+                            'assets/prototype.png',
+                            width: 200,
+                            height: 200,
+                            fit: BoxFit.cover,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+
+                // Start consulting button
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      const url = 'https://wa.me/7848084152';
+                      if (await canLaunch(url)) {
+                        await launch(url);
+                      } else {
+                        throw 'Could not launch $url';
+                      }
+                    },
+                    child: Text('Start Consulting with Doctor'),
+                  ),
+                ),
+
+                // Footer
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    '© 2025 Tribo Care. All Rights Reserved.',
+                    style: TextStyle(fontSize: 14, color: Colors.white),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ],
             ),
-
-            // Project description
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  Text(
-                    'Welcome to Tribo Care',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.teal,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Tribo Care is an innovative telemedicine platform aimed at providing healthcare support to rural communities. Our app connects patients with healthcare providers, making healthcare accessible and efficient.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ],
-              ),
-            ),
-
-            // Prototype images
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Column(
-                children: [
-                  Text(
-                    'Prototype Images',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/prototype.png', // Replace with your prototype image paths
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover,
-                      ),
-                      SizedBox(width: 10),
-                      Image.asset(
-                        'assets/prototype2.jpg',
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            // Navigation buttons
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      // Navigate to first page
-                    },
-                    child: Text('Navigate 1'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Navigate to second page
-                    },
-                    child: Text('Navigate 2'),
-                  ),
-                ],
-              ),
-            ),
-
-            // Footer
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                '© 2025 Tribo Care. All Rights Reserved.',
-                style: TextStyle(fontSize: 14, color: Colors.grey),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.teal,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.grey,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_hospital),
+            label: 'Vital Page',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat),
+            label: 'ChatBot',
+          ),
+        ],
+        onTap: (index) {
+          if (index == 0) {
+          } else if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Vitalpage()),
+            );
+          }
+          else if (index == 2) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Vitalpage()),
+            );
+          }
+        },
       ),
     );
   }
