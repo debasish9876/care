@@ -1,3 +1,4 @@
+import 'package:care/chatbotpage.dart';
 import 'package:care/vitalpage.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -192,7 +193,7 @@ class HomePage extends StatelessWidget {
           else if (index == 2) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => Vitalpage()),
+              MaterialPageRoute(builder: (context) => ChatScreen()),
             );
           }
         },
