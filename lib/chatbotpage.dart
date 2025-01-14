@@ -16,7 +16,7 @@ class _ChatScreenState extends State<ChatScreen> {
   // Initialize the model
   final model = GenerativeModel(
     model: 'gemini-pro',  // Changed to correct model name
-    apiKey: "AIzaSyDkmHakCRnJHQfr3dmkA3aS-8reYbCB0ec", // Replace with your actual API key
+    apiKey: "", // Replace with your actual API key
   );
 
   // Create a chat instance
