@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:translator/translator.dart'; // Translator package for translation
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -15,12 +16,18 @@ class _ChatScreenState extends State<ChatScreen> {
 
   // Initialize the model
   final model = GenerativeModel(
-    model: 'gemini-pro',  // Changed to correct model name
-    apiKey: "", // Replace with your actual API key
+    model: 'gemini-pro', // Use your chosen model
+    apiKey: "AIzaSyDkmHakCRnJHQfr3dmkA3aS-8reYbCB0ec", // Replace with your actual API key
   );
 
   // Create a chat instance
   late final chat = model.startChat();
+
+  // Initialize the translator
+  final translator = GoogleTranslator();
+
+  // User's selected language
+  String selectedLanguage = 'en'; // Default is English
 
   void sendMessage(String message) async {
     if (message.trim().isEmpty) return;
@@ -31,19 +38,25 @@ class _ChatScreenState extends State<ChatScreen> {
     });
 
     try {
-      // Send message to Gemini and get response
-      final response = await chat.sendMessage(Content.text(message));
+      // Translate user input to English
+      final translatedInput = await translator.translate(message, to: 'en');
+
+      // Send translated message to Gemini
+      final response = await chat.sendMessage(Content.text(translatedInput.text));
       final responseText = response.text ?? 'No response received';
 
+      // Translate Gemini's response back to the user's selected language
+      final translatedResponse = await translator.translate(responseText, to: selectedLanguage);
+
       setState(() {
-        messages.add({"role": "assistant", "content": responseText});
+        messages.add({"role": "assistant", "content": translatedResponse.text});
         _isLoading = false;
       });
     } catch (error) {
       setState(() {
         messages.add({
           "role": "assistant",
-          "content": "Error: Unable to get response from Gemini API. Please try again."
+          "content": "Error: Unable to process your request. Please try again."
         });
         _isLoading = false;
       });
@@ -56,7 +69,30 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("MediBot"),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.teal,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: DropdownButton<String>(
+              value: selectedLanguage,
+              dropdownColor: Colors.white,
+              icon: const Icon(Icons.language, color: Colors.white),
+              underline: const SizedBox(),
+              onChanged: (value) {
+                setState(() {
+                  selectedLanguage = value!;
+                });
+              },
+              items: const [
+                DropdownMenuItem(value: 'en', child: Text('English')),
+                DropdownMenuItem(value: 'hi', child: Text('Hindi')),
+                DropdownMenuItem(value: 'bn', child: Text('Bengali')),
+                DropdownMenuItem(value: 'te', child: Text('Telugu')),
+                DropdownMenuItem(value: 'ta', child: Text('Tamil')),
+              ],
+            ),
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -67,11 +103,11 @@ class _ChatScreenState extends State<ChatScreen> {
               itemBuilder: (context, index) {
                 final message = messages[index];
                 final isUser = message["role"] == "user";
-                
+
                 return Align(
                   alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
                   child: Container(
-                    margin: EdgeInsets.symmetric(
+                    margin: const EdgeInsets.symmetric(
                       vertical: 4,
                       horizontal: 8,
                     ),

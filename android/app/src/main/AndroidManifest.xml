@@ -1,4 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <queries>
+        <!-- Add this to query for apps like WhatsApp -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" android:host="wa.me" />
+        </intent>
+    </queries>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:usesCleartextTraffic="true"
         android:label="care"

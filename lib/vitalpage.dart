@@ -27,11 +27,11 @@ class Vitalpage extends StatelessWidget {
         },
       ),
     )
-    ..loadRequest(Uri.parse('http://192.168.122.97/'));
+    ..loadRequest(Uri.parse('http://192.168.122.54/'));
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Care')),
+      appBar: AppBar(title: const Text('Your Vital Reports'),backgroundColor: Colors.teal),
       body: WebViewWidget(controller: controller),
     );
   }
